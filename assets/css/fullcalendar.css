@@ -1,0 +1,11 @@
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-number {
+   text-decoration: none;
+   color: #333;
+}
+
+.fc-daygrid-event {
+   border: 1px solid #e4e4e4 !important;
+   border-radius: 8px !important;
+   cursor: pointer;
+}

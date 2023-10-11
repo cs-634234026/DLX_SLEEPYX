@@ -1,0 +1,92 @@
+<?php
+include 'config.php';
+
+$id = $_GET["id"];
+$sql = "SELECT * FROM deposit WHERE id = '".$id."'";
+$query = mysqli_query($conn, $sql);
+$result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+
+if(isset($_POST['submit'])){
+  $id = $_POST['id'];
+  $service = $_POST['service'];
+  $status = $_POST['status'];
+
+  $sql = "UPDATE deposit SET service = '$service', status = '$status' WHERE id = '$id'";
+  
+  if(mysqli_query($conn, $sql)){
+    $_SESSION['success'] = "แก้ไขผู้ใช้สำเร็จ";
+    header('location: statusdeposit.php');
+  } else {
+    $_SESSION['errors'] = "แก้ไขผู้ใช้ไม่สำเร็จ";
+    header('location: service.php');
+  }
+}
+?>
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/dashboard.css">
+    <title>ระบบหลังบ้าน</title>
+  </head>
+  <body>
+    <?php include 'include/header.php'; ?>
+    <div class="container-fluid">
+      <div class="row">
+        <?php include 'include/sidebarMenu.php'; ?>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">แก้ไขข้อมูลผู้ใช้งาน</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <button type="button" class="btn btn-secondary" onclick="window.location.href='statusdeposit.php'">ย้อนกลับ</button>
+            </div>
+          </div>
+          <div class="row justify-content-md-center">
+            <div class="col-6">
+              <div class="card">
+                <h5 class="card-header"><?php echo 'ID : '.$_GET['id']; ?></h5>
+                <div class="card-body">
+
+                  <form method="post" action="status_updatex.php" >
+                    <input type="hidden" name="id" value="<?php echo $id?>">
+
+                    <div class="mb-3">
+              <label for="service" class="form-label">ชื่อบริการ</label>
+              <input type="text" class="form-control" id="service" name="service" value="<?php echo $result['service']; ?>" required>
+            </div>
+                    <div class="mb-3">
+              <label class="form-label">สถานะบริการ</label>
+              <select class="form-select" name="status">
+              <option value="0" <?php if ($result["status"] == '0') { echo "selected"; } ?> >ตรวจสอบการชำระเงิน</option>
+                <option value="1" <?php if ($result["status"] == '1') { echo "selected"; } ?> >ชำระเงินแล้ว</option>
+              </select>
+            </div>
+
+
+                    <!-- <div class="mb-3">
+                      <label class="form-label">รูปภาพ</label>
+                      <input type="file" class="form-control" name="image" id="image" accept=".jpg, .jpeg, .png" value="" />
+                    </div> -->
+
+                    <!-- <div class="mb-3">
+                      <label for="description" class="form-label">รายละเอียดบริการ</label>
+                      <textarea class="form-control" id="description" name="description" rows="3" required><?php echo $result['description']; ?></textarea>
+                    </div> -->
+
+                    <button type="submit" name="submit" class="btn btn-primary">บันทึก</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

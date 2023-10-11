@@ -1,0 +1,19 @@
+html,
+body,
+* {
+   font-family: 'Noto Sans Thai';
+}
+
+.pt-80 {
+   padding-top: 80px;
+}
+
+textarea {
+   resize: none !important;
+}
+
+.text-dot {
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
